@@ -24,13 +24,14 @@ export default function Navigation() {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-500 ${
-        isScrolled
-          ? 'glassmorphism py-2'
-          : 'bg-transparent py-4'
+        isScrolled || isMenuOpen 
+          ? 'bg-blue-900/80 backdrop-blur-lg border-b border-blue-700/50 py-2' 
+          : 'bg-blue-900/40 backdrop-blur-sm py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center">
+          {/* Logo */}
           <a
             href="#"
             className="relative group"
@@ -53,14 +54,14 @@ export default function Navigation() {
                 <span className="relative z-10 text-gray-300 group-hover:text-white transition-colors">
                   {link.label}
                 </span>
-                <div className="absolute inset-0 w-full h-full glassmorphism rounded-xl scale-0 group-hover:scale-100 transition-transform duration-300"/>
+                <div className="absolute inset-0 w-full h-full bg-blue-800/50 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-300"/>
               </a>
             ))}
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden relative z-50 text-gray-300 hover:text-white transition-colors"
+            className="md:hidden relative z-50 p-2 rounded-lg bg-blue-800/50 text-gray-300 hover:text-white transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -68,14 +69,16 @@ export default function Navigation() {
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 glassmorphism border-t border-white/10">
-            <div className="p-4 space-y-2">
+        <div className={`md:hidden fixed inset-x-0 top-[72px] transition-all duration-300 transform ${
+          isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
+        }`}>
+          <div className="mx-4 bg-blue-900/90 backdrop-blur-lg rounded-2xl border border-blue-700/50">
+            <div className="py-4 px-2">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block px-4 py-3 text-gray-300 hover:text-white rounded-xl hover:bg-white/5 transition-all"
+                  className="block mx-2 px-4 py-3 text-gray-300 hover:text-white rounded-xl hover:bg-blue-800/50 transition-all text-center text-lg"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}
@@ -83,7 +86,7 @@ export default function Navigation() {
               ))}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );
